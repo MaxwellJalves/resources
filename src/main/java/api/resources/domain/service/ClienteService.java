@@ -1,7 +1,7 @@
-package api.resources.service;
+package api.resources.domain.service;
 
-import api.resources.entity.Cliente;
-import api.resources.repository.ClienteRepository;
+import api.resources.domain.model.Cliente;
+import api.resources.domain.repository.ClienteRepository;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;

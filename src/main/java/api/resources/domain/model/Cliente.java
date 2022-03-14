@@ -1,4 +1,4 @@
-package api.resources.entity;
+package api.resources.domain.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;

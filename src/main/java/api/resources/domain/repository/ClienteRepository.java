@@ -1,6 +1,6 @@
-package api.resources.repository;
+package api.resources.domain.repository;
 
-import api.resources.entity.Cliente;
+import api.resources.domain.model.Cliente;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;

@@ -1,4 +1,4 @@
-package api.resources.exceptiohandler;
+package api.resources.domain.exceptiohandler;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

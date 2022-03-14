@@ -1,7 +1,7 @@
-package api.resources.controller;
+package api.resources.api.controller;
 
-import api.resources.entity.Cliente;
-import api.resources.service.ClienteService;
+import api.resources.domain.model.Cliente;
+import api.resources.domain.service.ClienteService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,20 +32,18 @@ public class ClienteController {
     @GetMapping(path = "/cliente")
     public ResponseEntity obterCliente(@RequestParam(value = "nome") String nome) {
         var response = clienteService.findByNome(nome);
-        log.info("PARAMETRO RECEBIDO PELO CONTROLADOR?Nome : " + nome);
         if (response == null) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Não foi localizado registros em nossa base de dados.");
         }
-        log.info("OBJETO OBTIDO ATRAVÉS DA REQUEST RECEBIDA:\t" + response);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @GetMapping(path = "/cliente/{id}")
     public ResponseEntity<Cliente> obterClientePorId(@PathVariable("id") UUID id) {
         //TODO primeira forma - Funcional
-        return  clienteService.findById(id)
+        return clienteService.findById(id)
                 .map(ResponseEntity::ok)
-                //.map(mapeamento -> ResponseEntity.ok(mapeamento))
+
                 .orElse(ResponseEntity.notFound().build());
         //TODO segunda forma
         /*
@@ -62,19 +60,20 @@ public class ClienteController {
     }
 
     @PostMapping(path = "/cliente")
-    public ResponseEntity cadastrarCliente(@RequestBody @Valid Cliente cliente){
+    public ResponseEntity cadastrarCliente(@RequestBody @Valid Cliente cliente) {
         var response = clienteService.save(cliente);
-        if(response == null){
+        if (response == null) {
             return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body("não foi possivel salvar");
         }
-        return ResponseEntity.created(URI.create("localhost:8080/cliente/"+response.getId())).body(response);
+        return ResponseEntity.created(URI.create("localhost:8080/cliente/" + response.getId())).body(response);
     }
-    @PutMapping(path = "/cliente/{id}")
-    public ResponseEntity atualizarCliente(@PathVariable("id")UUID id ,@RequestBody @Valid Cliente cliente){
 
-        log.info("DEBUG"+cliente.toString());
+    @PutMapping(path = "/cliente/{id}")
+    public ResponseEntity atualizarCliente(@PathVariable("id") UUID id, @RequestBody @Valid Cliente cliente) {
+
+        log.info("DEBUG" + cliente.toString());
         var validacao = clienteService.findById(id);
-        if(!validacao.isPresent()){
+        if (!validacao.isPresent()) {
             return ResponseEntity.notFound().build();
         }
         cliente.setId(id);
@@ -84,7 +83,7 @@ public class ClienteController {
     }
 
     @DeleteMapping(path = "/cliente/{id}")
-    public String removerCliente(@PathVariable UUID id){
-       return clienteService.delete(id);
+    public String removerCliente(@PathVariable UUID id) {
+        return clienteService.delete(id);
     }
 }
